@@ -8,10 +8,10 @@ RUN useradd openfire -u 2000 -g 2000
 
 
 RUN mkdir -p /etc/service/openfire
-COPY --chown=openfire:openfire openfire.sh /etc/service/openfire/run
+COPY --chown=openfire:openfire scripts/openfire.sh /etc/service/openfire/run
 RUN chmod +x /etc/service/openfire/run
 
-COPY --chown=openfire:openfire pre-conf.sh /sbin/pre-conf
+COPY --chown=openfire:openfire scripts/pre-conf.sh /sbin/pre-conf
 RUN chmod +x /sbin/pre-conf; sync \
   && /bin/bash -c /sbin/pre-conf \
   && rm /sbin/pre-conf
@@ -21,6 +21,9 @@ RUN chown -R openfire:openfire /etc/service/openfire
 
 USER openfire
 WORKDIR /usr/share/openfire
-EXPOSE 7443 7777 9090 9091 5000-5100/udp 5000-6000/tcp 10000-10050/udp
+
+# TODO: Verify the correct port groups based on server settings
+# EXPOSE 7443 7777 9090 9091 5000-5100/udp 5000-6000/tcp 10000-10050/udp
+EXPOSE 5269 5270 5222 5223 5275 5276 7070 7443 7777 9090 9091 10005/udp 10015/udp
 
 CMD ["/etc/service/openfire/run"]
