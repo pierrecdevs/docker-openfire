@@ -53,12 +53,37 @@ services:
       - openfirenet
 
   certbot:
-    image: certbot/certbot
+    image: certbot/dns-cloudflare
+    container_name: ${JABBER_HOST}-certbot
     volumes:
       - ./data/certbot:/etc/letsencrypt
-    environment:
-      EMAIL: $EMAIL
-      PREFERRED_CHALLENGES: dns
-      DOMAINS: "search.$JABBER_HOST conference.$JABBER_HOST xmpp-client.$JABBER_HOST xmpp-server.$JABBER_HOST"
-      RSA_KEY_SIZE: 4096
-    command: certonly 
+      - ./data/certbot/cloudflare.ini:/cloudflare.ini:ro
+      - ./data/certbot/post-hook.sh:/post-hook.sh:ro
+      - ./data/hotdeploy:/usr/share/openfire/resources/security/hotdeploy
+    entrypoint: /bin/sh
+    command: -c "
+      certbot certonly
+        --dns-cloudflare
+        --dns-cloudflare-credentials /cloudflare.ini
+        --dns-cloudflare-propagation-seconds 60
+        --email ${EMAIL}
+        --agree-tos
+        --no-eff-email
+        --non-interactive
+        --keep-until-expiring
+        -d *.${JABBER_HOST}
+        -d ${JABBER_HOST}
+        --deploy-hook /post-hook.sh
+      &&
+      while true; do
+        certbot renew 
+          --non-interactive
+          --deploy-hook /post-hook.sh;
+        sleep 12h;
+      done
+      "
+    restart: unless-stopped
+    networks:
+      - openfirenet
+
+
