@@ -1,4 +1,4 @@
-FROM openjdk:19-jdk-alpine
+FROM openjdk:19-ea-jdk-alpine
 
 RUN apk add --no-cache vim postgresql-client tzdata shadow runit bash bind-tools sudo unzip maven java-postgresql-jdbc
 

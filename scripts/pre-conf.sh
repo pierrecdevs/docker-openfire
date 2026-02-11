@@ -2,9 +2,9 @@
 
 set -e
 
-wget -O openfire_5_0_2.tar.gz https://www.igniterealtime.org/downloadServlet?filename=openfire/openfire_5_0_2.tar.gz
-tar xvzf openfire_5_0_2.tar.gz -C /usr/share
-rm openfire_5_0_2.tar.gz
+wget -O openfire_5_0_3.tar.gz https://www.igniterealtime.org/downloadServlet?filename=openfire/openfire_5_0_3.tar.gz
+tar xvzf openfire_5_0_3.tar.gz -C /usr/share
+rm openfire_5_0_3.tar.gz
 
 cd /usr/share/openfire/plugins/
 wget -O search.jar https://igniterealtime.org/projects/openfire/plugins/1.7.5/search.jar
@@ -17,4 +17,5 @@ wget -O pushnotification.jar https://www.igniterealtime.org/projects/openfire/pl
 wget -O inverse.jar https://www.igniterealtime.org/projects/openfire/plugins/11.0.1.1/inverse.jar 
 wget -O ofmeet.jar https://www.igniterealtime.org/projects/openfire/plugins/0.9.8/ofmeet.jar 
 wget -O hazelcast.jar https://www.igniterealtime.org/projects/openfire/plugins/5.5.0.1/hazelcast.jar 
- 
+wget -O certificatemanager.jar https://igniterealtime.org/projects/openfire/plugins/1.2.0/certificatemanager.jar
+wget -O motd.jar https://igniterealtime.org/projects/openfire/plugins/1.3.0/motd.jar
